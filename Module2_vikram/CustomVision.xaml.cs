@@ -103,12 +103,24 @@ namespace Module2_vikram
 
                     double max = responseModel.Predictions.Max(m => m.Probability);
 
-                    TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
+                   // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
+		   
+		   foreach (Prediction item in responseModel.Predictions)
+					{
+						if (item.Probability >= 0.2)
+						{
+							TagLabel.Text += item.Tag + "\n";
+							PredictionLabel.Text += item.Probability + "\n";
+						}
+						else
+							TagLabel.Text = "Not a SuperHero";
+					}
 
                 }
 
                 //Get rid of file once we have finished using it
                 file.Dispose();
+	
             }
         }
     }
