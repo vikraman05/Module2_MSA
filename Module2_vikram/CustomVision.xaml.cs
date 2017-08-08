@@ -49,25 +49,30 @@ namespace Module2_vikram
             });
             await postLocationAsync();
 
-			async Task postLocationAsync()
-			{
+            async Task postLocationAsync()
+            {
 
-				var locator = CrossGeolocator.Current;
-				locator.DesiredAccuracy = 50;
+                var locator = CrossGeolocator.Current;
+                locator.DesiredAccuracy = 50;
 
-				var position = await locator.GetPositionAsync();
+                var position = await locator.GetPositionAsync();
 
-				NotHeroModel model = new NotHeroModel()
-				{
-					Longitude = (float)position.Longitude,
-					Latitude = (float)position.Latitude
+                NotHeroModel model = new NotHeroModel()
+                {
+                    Longitude = (float)position.Longitude,
+                    Latitude = (float)position.Latitude
 
-				};
+                };
 
-				await AzureManager.AzureManagerInstance.PostHeroInformation(model);
-			}
+                await AzureManager.AzureManagerInstance.PostHeroInformation(model);
+            }
             await MakePredictionRequest(file);
         }
+
+        //private async void moreInfoClicked(object sender, EventArgs e)
+        //{ 
+
+        //}
 
         static byte[] GetImageAsByteArray(MediaFile file)
         {
@@ -103,24 +108,36 @@ namespace Module2_vikram
 
                     double max = responseModel.Predictions.Max(m => m.Probability);
 
-                   // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
-		   
-		   foreach (Prediction item in responseModel.Predictions)
-					{
-						if (item.Probability >= 0.2)
-						{
-							TagLabel.Text += item.Tag + "\n";
-							PredictionLabel.Text += item.Probability + "\n";
-						}
-						else
-							TagLabel.Text = "Not a SuperHero";
-					}
+                    // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
 
+                    foreach (Prediction item in responseModel.Predictions)
+                        // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
+
+                        foreach (Prediction item in responseModel.Predictions)
+
+                        {
+                            if (item.Probability >= 0.2)
+                            {
+                                TagLabel.Text += item.Tag + "\n";
+                                PredictionLabel.Text += item.Probability + "\n";
+                            }
+                            else
+                                TagLabel.Text = "Not a SuperHero";
+
+
+                            NotHeroModel model1 = new NotHeroModel();
+                            {
+
+                                model1.Hero_Name = (string)TagLabel.Text;
+
+                                await AzureManager.AzureManagerInstance.PostHeroInformation(model1);
+                            }
+
+                            //Get rid of file once we have finished using it
+                            file.Dispose();
+
+                        }
                 }
-
-                //Get rid of file once we have finished using it
-                file.Dispose();
-	
             }
         }
     }

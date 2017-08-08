@@ -14,5 +14,11 @@ namespace Module2_vikram.DataModel
 
 		[JsonProperty(PropertyName = "Latitude")]
 		public float Latitude { get; set; }
+
+		[JsonProperty(PropertyName = "Hero_Name")]
+		public string Hero_Name { get; set; }
+
+		[JsonProperty(PropertyName = "url")]
+		public string url { get; set; }
         }
     }

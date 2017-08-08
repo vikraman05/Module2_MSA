@@ -10,6 +10,7 @@
             </Label>
         </StackLayout>
         <Image x:Name="image" Aspect="AspectFit"/>
+            <Button Text="Get More Info" Clicked="moreInfoClicked" />
     </StackLayout>
 	</ContentPage.Content>
 </ContentPage>
