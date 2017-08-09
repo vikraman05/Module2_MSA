@@ -13,6 +13,8 @@
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{Binding Longitude, StringFormat='Longitude: {0:N}'}" HorizontalOptions="FillAndExpand" Margin="20,0,0,0" VerticalTextAlignment="Center" />
                                 <Label Text="{Binding Latitude, StringFormat='Latitude: {0:N}'}" VerticalTextAlignment="Center" Margin="0,0,20,0" />
+				     <Label Text="{Binding Hero_Name, StringFormat='Hero_Name: {0:N}'}" VerticalTextAlignment="Center" Margin="0,0,20,0" />
+				   <Label Text="{Binding url, StringFormat='url: {0:N}'}" VerticalTextAlignment="Center" Margin="0,0,20,0" />  
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
