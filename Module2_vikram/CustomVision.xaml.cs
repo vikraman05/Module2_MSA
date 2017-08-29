@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,8 +60,7 @@ namespace Module2_vikram
                 NotHeroModel model = new NotHeroModel()
                 {
                     Longitude = (float)position.Longitude,
-                    Latitude = (float)position.Latitude
-
+                    Latitude = (float)position.Latitude,
                 };
 
                 await AzureManager.AzureManagerInstance.PostHeroInformation(model);
@@ -110,35 +109,50 @@ namespace Module2_vikram
 
                     // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
 
+                    string heroUrl = "";
+                    bool isHero = false;
+
                     foreach (Prediction item in responseModel.Predictions)
-                        // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
-
-                        foreach (Prediction item in responseModel.Predictions)
-
+                    // TagLabel.Text = (max >= 0.2) ? "SuperHero" : "Not SuperHero";
+                    {
+                        if (item.Probability >= 0.2)
                         {
-                            if (item.Probability >= 0.2)
-                            {
-                                TagLabel.Text += item.Tag + "\n";
-                                PredictionLabel.Text += item.Probability + "\n";
-                            }
-                            else
-                                TagLabel.Text = "Not a SuperHero";
-
-
-                            NotHeroModel model1 = new NotHeroModel();
-                            {
-
-                                model1.Hero_Name = (string)TagLabel.Text;
-
-                                await AzureManager.AzureManagerInstance.PostHeroInformation(model1);
-                            }
-
-                            //Get rid of file once we have finished using it
-                            file.Dispose();
-
+                            TagLabel.Text = item.Tag;
+                            //PredictionLabel.Text += item.Probability + "\n";
+                            isHero = true;
+                            heroUrl = getHeroURL(item.Tag); //gets the url depending on what superhero is in the tag
                         }
+                    }
+
+                    if(!isHero)
+                    {
+                        TagLabel.Text = "Not a SuperHero";
+                    }
+
+                    NotHeroModel model1 = new NotHeroModel()
+                    {
+                        Hero_Name = TagLabel.Text.toString(),
+                        url = heroUrl,  
+                    };
+                    await AzureManager.AzureManagerInstance.PostHeroInformation(model1);
                 }
+                //Get rid of file once we have finished using it
+                file.Dispose();
             }
+        }
+
+        private string getHeroURL(string tag)
+        {
+            switch (tag)
+            {
+                case "Thor":
+                    return "https://www.youtube.com/watch?v=JOddp-nlNvQ"; //thor movie trailer
+                case "Superman":
+                    return "insert URL here"; //etc
+                case "Batman":
+                    return "string here";
+            }
+            return ""; //have to return empty string incase no hero is in image
         }
     }
 }
